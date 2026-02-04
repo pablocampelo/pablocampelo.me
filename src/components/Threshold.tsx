@@ -5,11 +5,27 @@ import Workspace from './Workspace';
 
 export default function Threshold() {
   const [entered, setEntered] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
-  // 1) Acción única para entrar (evita duplicar lógica)
-  const enter = () => setEntered(true);
+  // Lee la preferencia del sistema: "reducir movimiento".
+  // Esto nos sirve para saltar animaciones (cuando las añadamos) si el usuario lo prefiere.
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  // 2) Teclado: solo funciona mientras estás en Cover
+    const update = () => setReducedMotion(mq.matches);
+    update();
+
+    mq.addEventListener?.('change', update);
+    return () => mq.removeEventListener?.('change', update);
+  }, []);
+
+  // Acción única para entrar.
+  // Si reducedMotion está activo, la entrada debe ser inmediata (sin efectos).
+  const enter = () => {
+    setEntered(true);
+  };
+
+  // Teclado: solo funciona mientras estás en Cover.
   useEffect(() => {
     if (entered) return;
 
@@ -28,7 +44,7 @@ export default function Threshold() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [entered]);
 
-  // 3) Al entrar, mandamos foco al primer tab del Workspace (detalle pro)
+  // Al entrar, mandamos foco al primer tab del Workspace.
   useEffect(() => {
     if (!entered) return;
 
@@ -37,7 +53,6 @@ export default function Threshold() {
     });
   }, [entered]);
 
-  // 4) Render condicional: Cover o Workspace
   if (!entered) {
     return (
       <main
@@ -50,13 +65,15 @@ export default function Threshold() {
       >
         <div style={{ maxWidth: 520 }}>
           <h1 style={{ fontSize: 40, margin: 0 }}>Cover</h1>
-          <p style={{ opacity: 0.7 }}>Intro editorial (v1 simple). Entras con botón o teclado.</p>
+          <p style={{ opacity: 0.7 }}>Intro editorial (v1). Acceso por botón o teclado.</p>
 
           <button type="button" onClick={enter}>
             Enter workspace
           </button>
 
-          <p style={{ marginTop: 12, opacity: 0.6 }}>Scroll to enter ↓ (luego)</p>
+          <p style={{ marginTop: 12, opacity: 0.6 }}>
+            Scroll to enter ↓{reducedMotion ? ' (reduced motion activo)' : ''}
+          </p>
         </div>
       </main>
     );
