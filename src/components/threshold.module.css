@@ -1,0 +1,73 @@
+.track {
+  height: 220vh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+
+  /* progreso 0..100 */
+  --p: 0;
+
+  /* fases normalizadas 0..1 */
+  --p1: clamp(0, calc(var(--p) / 33), 1);
+  --p2: clamp(0, calc((var(--p) - 33) / 33), 1);
+  --p3: clamp(0, calc((var(--p) - 66) / 34), 1);
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.coverLayer {
+  pointer-events: auto;
+}
+
+.card {
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 24px;
+  width: min(760px, 92vw);
+  background: transparent;
+}
+
+.coverCard {
+  width: calc(100vw + (min(760px, 92vw) - 100vw) * var(--p1));
+  height: calc(100vh + (min(460px, 72vh) - 100vh) * var(--p1));
+  display: grid;
+  place-items: center;
+
+  opacity: calc(1 - var(--p2));
+  transform: translateY(calc(-10px * var(--p2)));
+  will-change: width, height, opacity, transform;
+}
+
+.previewCard {
+  width: calc(min(760px, 92vw) + (100vw - min(760px, 92vw)) * var(--p3));
+  height: calc(min(460px, 72vh) + (100vh - min(460px, 72vh)) * var(--p3));
+  display: grid;
+  place-items: center;
+
+  opacity: var(--p2);
+  transform: translateY(calc((1 - var(--p2)) * 24px));
+  will-change: width, height, opacity, transform;
+}
+
+.previewInner {
+  width: min(680px, 88vw);
+  opacity: 0.8;
+  text-align: left;
+}
+
+.hint {
+  margin-top: 12px;
+  opacity: 0.6;
+  font-size: 14px;
+}
