@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type React from 'react';
+import styles from './workspace.module.css';
 
 const TABS = [
   { id: 'projects', label: 'Projects' },
@@ -56,7 +57,6 @@ export default function Workspace() {
         moveTo(TABS.length - 1);
         break;
 
-      // Opcional (pero correcto): Enter/Space activan el tab actual
       case 'Enter':
       case ' ':
         e.preventDefault();
@@ -69,15 +69,11 @@ export default function Workspace() {
   };
 
   return (
-    <main style={{ minHeight: '100vh', padding: 24 }}>
-      <h1 style={{ margin: 0 }}>Workspace</h1>
-      <p style={{ opacity: 0.7 }}>Tabs funcionales con navegación por secciones.</p>
+    <main className={styles.workspace}>
+      <h1 className={styles.title}>Workspace</h1>
+      <p className={styles.subtitle}>Tabs funcionales con navegación por secciones.</p>
 
-      <nav
-        role="tablist"
-        aria-label="Workspace sections"
-        style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}
-      >
+      <nav role="tablist" aria-label="Workspace sections" className={styles.tablist}>
         {TABS.map((tab) => {
           const selected = tab.id === active;
           const tabId = `tab-${tab.id}`;
@@ -95,12 +91,7 @@ export default function Workspace() {
               onClick={() => activateTab(tab.id)}
               onFocus={() => setActive(tab.id)}
               onKeyDown={(e) => onTabKeyDown(e, tab.id)}
-              style={{
-                padding: '8px 10px',
-                borderRadius: 10,
-                border: '1px solid currentColor',
-                opacity: selected ? 1 : 0.7,
-              }}
+              className={styles.tab}
             >
               {tab.label}
             </button>
@@ -120,10 +111,10 @@ export default function Workspace() {
             id={panelId}
             aria-labelledby={tabId}
             hidden={!selected}
-            style={{ marginTop: 16, paddingTop: 8 }}
+            className={styles.panel}
           >
-            <h2 style={{ margin: '0 0 8px 0' }}>{tab.label}</h2>
-            <p style={{ margin: 0, opacity: 0.8 }}>Contenido de ejemplo de {tab.label}.</p>
+            <h2 className={styles.panelTitle}>{tab.label}</h2>
+            <p className={styles.panelText}>Contenido de ejemplo de {tab.label}.</p>
           </section>
         );
       })}

@@ -71,3 +71,43 @@
   opacity: 0.6;
   font-size: 14px;
 }
+
+/* Reduced motion (cover simple) */
+.rmMain {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.rmContainer {
+  max-width: 520px;
+}
+
+.coverTitle {
+  font-size: clamp(28px, 3.2vw, 40px);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.coverText {
+  opacity: 0.7;
+  margin-top: 8px;
+  max-width: 68ch;
+}
+
+/* Shared inner blocks */
+.coverInner {
+  text-align: left;
+  width: min(680px, 88vw);
+}
+
+.previewTitle {
+  margin: 0;
+}
+
+.previewText {
+  margin-top: 8px;
+  margin-bottom: 0;
+  opacity: 0.8;
+}

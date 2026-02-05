@@ -23,11 +23,9 @@ export default function Threshold() {
 
   const enter = () => {
     setEntered(true);
-    // Cuando entras, queremos empezar arriba del workspace (evita quedarte “abajo” por el track).
     requestAnimationFrame(() => window.scrollTo({ top: 0 }));
   };
 
-  // Teclado: solo mientras estás en Cover
   useEffect(() => {
     if (entered) return;
 
@@ -46,7 +44,6 @@ export default function Threshold() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [entered]);
 
-  // Scroll → progreso (0..100) → CSS var --p. Al llegar a 100: commit.
   useEffect(() => {
     if (entered || reducedMotion) return;
 
@@ -91,7 +88,6 @@ export default function Threshold() {
     };
   }, [entered, reducedMotion]);
 
-  // Al entrar, foco al primer tab del Workspace
   useEffect(() => {
     if (!entered) return;
     requestAnimationFrame(() => {
@@ -99,14 +95,13 @@ export default function Threshold() {
     });
   }, [entered]);
 
-  // Si reduced motion está activo, evitamos el umbral por scroll.
   if (reducedMotion) {
     if (!entered) {
       return (
-        <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
-          <div style={{ maxWidth: 520 }}>
-            <h1 style={{ fontSize: 40, margin: 0 }}>Cover</h1>
-            <p style={{ opacity: 0.7 }}>Acceso por botón o teclado.</p>
+        <main className={styles.rmMain}>
+          <div className={styles.rmContainer}>
+            <h1 className={styles.coverTitle}>Cover</h1>
+            <p className={styles.coverText}>Acceso por botón o teclado.</p>
             <button type="button" onClick={enter}>
               Enter workspace
             </button>
@@ -117,19 +112,16 @@ export default function Threshold() {
     return <Workspace />;
   }
 
-  // Commit: una vez dentro, mostramos el Workspace real.
   if (entered) return <Workspace />;
 
-  // Intro con scroll “natural”: track alto + stage sticky que anima por --p.
   return (
     <div ref={trackRef} className={styles.track}>
       <div ref={stageRef} className={styles.stage}>
-        {/* Cover */}
         <div className={`${styles.layer} ${styles.coverLayer}`}>
           <div className={`${styles.card} ${styles.coverCard}`}>
-            <div style={{ textAlign: 'left', width: 'min(680px, 88vw)' }}>
-              <h1 style={{ fontSize: 40, margin: 0 }}>Cover</h1>
-              <p style={{ opacity: 0.7 }}>Intro editorial (v1). Acceso por botón o teclado.</p>
+            <div className={styles.coverInner}>
+              <h1 className={styles.coverTitle}>Cover</h1>
+              <p className={styles.coverText}>Intro editorial (v1). Acceso por botón o teclado.</p>
 
               <button type="button" onClick={enter}>
                 Enter workspace
@@ -140,14 +132,11 @@ export default function Threshold() {
           </div>
         </div>
 
-        {/* Workspace preview (visual, no interactivo) */}
         <div className={styles.layer} aria-hidden="true">
           <div className={`${styles.card} ${styles.previewCard}`}>
             <div className={styles.previewInner}>
-              <h2 style={{ margin: 0 }}>Workspace</h2>
-              <p style={{ marginTop: 8, marginBottom: 0 }}>
-                Vista previa del sistema. Al final del scroll entras al workspace real.
-              </p>
+              <h2 className={styles.previewTitle}>Workspace</h2>
+              <p className={styles.previewText}>Navegación por secciones y contenido de ejemplo.</p>
             </div>
           </div>
         </div>
