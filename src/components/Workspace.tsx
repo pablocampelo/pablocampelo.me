@@ -112,9 +112,20 @@ export default function Workspace() {
             <h2 className={styles.panelTitle}>Projects</h2>
             <div className={styles.projects}>
               {PROJECTS.map((p) => (
-                <article key={p.title} className={styles.projectCard}>
-                  <h3 className={styles.projectTitle}>{p.title}</h3>
+                <a
+                  key={p.title}
+                  className={styles.projectLink}
+                  href={p.href}
+                  target={p.href.startsWith('http') ? '_blank' : undefined}
+                  rel={p.href.startsWith('http') ? 'noreferrer' : undefined}
+                >
+                  <div className={styles.projectHeader}>
+                    <h3 className={styles.projectTitle}>{p.title}</h3>
+                    {p.meta ? <span className={styles.projectMeta}>{p.meta}</span> : null}
+                  </div>
+
                   <p className={styles.projectDesc}>{p.description}</p>
+
                   <div className={styles.tags} aria-label={`${p.title} tags`}>
                     {p.tags.map((t) => (
                       <span key={t} className={styles.tag}>
@@ -122,7 +133,7 @@ export default function Workspace() {
                       </span>
                     ))}
                   </div>
-                </article>
+                </a>
               ))}
             </div>
           </section>

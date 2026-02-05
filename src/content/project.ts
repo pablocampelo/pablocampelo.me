@@ -2,20 +2,23 @@ export type Project = {
   title: string;
   description: string;
   tags: string[];
-  href?: string;
+  href: string;
+  meta?: string;
 };
 
 export const PROJECTS: Project[] = [
   {
     title: 'TrazoAI',
-    description: 'Frontend demo con arquitectura limpia y UX cuidada.',
+    description: 'Frontend demo con UX cuidada y arquitectura clara.',
     tags: ['Next.js', 'UI', 'A11y'],
-    href: '#',
+    href: 'https://github.com/pablocampelo/trazoai-web',
+    meta: 'Case study',
   },
   {
-    title: 'Portfolio System',
-    description: 'Sistema interactivo para explorar diseño y producto.',
+    title: 'Portfolio',
+    description: 'Sistema interactivo para explorar diseño y frontend.',
     tags: ['Design', 'Frontend'],
-    href: '#',
+    href: 'https://pablocampelo.me',
+    meta: 'Live',
   },
 ];
