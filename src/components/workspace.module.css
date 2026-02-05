@@ -1,24 +1,42 @@
-.workspace {
+.shell {
   min-height: 100vh;
-  padding: 24px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.headerInner {
+  padding: 16px 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: grid;
+  gap: 4px;
 }
 
 .title {
   margin: 0;
-  font-size: clamp(28px, 3.2vw, 40px);
-  letter-spacing: -0.02em;
+  font-size: 18px;
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
-  margin-top: 8px;
+  margin: 0;
   opacity: 0.7;
-  max-width: 68ch;
+  font-size: 14px;
 }
 
 .tablist {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
   flex-wrap: wrap;
 }
 
@@ -40,19 +58,60 @@
   opacity: 1;
 }
 
+.main {
+  padding: 24px;
+}
+
 .panel {
-  margin-top: 16px;
-  padding-top: 8px;
-  max-width: 72ch;
+  max-width: 80ch;
 }
 
 .panelTitle {
-  margin: 0 0 8px 0;
-  font-size: 18px;
+  margin: 0 0 12px 0;
+  font-size: 20px;
   letter-spacing: -0.01em;
 }
 
 .panelText {
   margin: 0;
   opacity: 0.8;
+}
+
+/* Projects list */
+.projects {
+  display: grid;
+  gap: 12px;
+  max-width: 80ch;
+}
+
+.projectCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.projectTitle {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.projectDesc {
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  opacity: 0.8;
+  font-size: 13px;
+}
+
+.tag {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 8px;
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type React from 'react';
 import styles from './workspace.module.css';
+import { PROJECTS } from '@/content/project';
 
 const TABS = [
   { id: 'projects', label: 'Projects' },
@@ -41,83 +42,104 @@ export default function Workspace() {
         e.preventDefault();
         moveTo(currentIndex + 1);
         break;
-
       case 'ArrowLeft':
         e.preventDefault();
         moveTo(currentIndex - 1);
         break;
-
       case 'Home':
         e.preventDefault();
         moveTo(0);
         break;
-
       case 'End':
         e.preventDefault();
         moveTo(TABS.length - 1);
         break;
-
       case 'Enter':
       case ' ':
         e.preventDefault();
         activateTab(currentId);
         break;
-
       default:
         break;
     }
   };
 
   return (
-    <main className={styles.workspace}>
-      <h1 className={styles.title}>Workspace</h1>
-      <p className={styles.subtitle}>Tabs funcionales con navegación por secciones.</p>
+    <div className={styles.shell}>
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <div className={styles.brand}>
+            <h1 className={styles.title}>Workspace</h1>
+            <p className={styles.subtitle}>Explora secciones por tabs.</p>
+          </div>
 
-      <nav role="tablist" aria-label="Workspace sections" className={styles.tablist}>
-        {TABS.map((tab) => {
-          const selected = tab.id === active;
-          const tabId = `tab-${tab.id}`;
-          const panelId = `panel-${tab.id}`;
+          <nav role="tablist" aria-label="Workspace sections" className={styles.tablist}>
+            {TABS.map((tab) => {
+              const selected = tab.id === active;
+              const tabId = `tab-${tab.id}`;
+              const panelId = `panel-${tab.id}`;
 
-          return (
-            <button
-              key={tab.id}
-              id={tabId}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              aria-controls={panelId}
-              tabIndex={selected ? 0 : -1}
-              onClick={() => activateTab(tab.id)}
-              onFocus={() => setActive(tab.id)}
-              onKeyDown={(e) => onTabKeyDown(e, tab.id)}
-              className={styles.tab}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </nav>
+              return (
+                <button
+                  key={tab.id}
+                  id={tabId}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-controls={panelId}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => activateTab(tab.id)}
+                  onFocus={() => setActive(tab.id)}
+                  onKeyDown={(e) => onTabKeyDown(e, tab.id)}
+                  className={styles.tab}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      </header>
 
-      {TABS.map((tab) => {
-        const selected = tab.id === active;
-        const tabId = `tab-${tab.id}`;
-        const panelId = `panel-${tab.id}`;
-
-        return (
+      <main className={styles.main}>
+        {active === 'projects' && (
           <section
-            key={tab.id}
             role="tabpanel"
-            id={panelId}
-            aria-labelledby={tabId}
-            hidden={!selected}
+            id="panel-projects"
+            aria-labelledby="tab-projects"
             className={styles.panel}
           >
-            <h2 className={styles.panelTitle}>{tab.label}</h2>
-            <p className={styles.panelText}>Contenido de ejemplo de {tab.label}.</p>
+            <h2 className={styles.panelTitle}>Projects</h2>
+            <div className={styles.projects}>
+              {PROJECTS.map((p) => (
+                <article key={p.title} className={styles.projectCard}>
+                  <h3 className={styles.projectTitle}>{p.title}</h3>
+                  <p className={styles.projectDesc}>{p.description}</p>
+                  <div className={styles.tags} aria-label={`${p.title} tags`}>
+                    {p.tags.map((t) => (
+                      <span key={t} className={styles.tag}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
-        );
-      })}
-    </main>
+        )}
+
+        {active !== 'projects' && (
+          <section
+            role="tabpanel"
+            id={`panel-${active}`}
+            aria-labelledby={`tab-${active}`}
+            className={styles.panel}
+          >
+            <h2 className={styles.panelTitle}>{TABS.find((t) => t.id === active)?.label}</h2>
+            <p className={styles.panelText}>Contenido de ejemplo de la sección seleccionada.</p>
+          </section>
+        )}
+      </main>
+    </div>
   );
 }
